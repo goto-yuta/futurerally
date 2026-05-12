@@ -3,7 +3,7 @@
  * Run with: npm run db:migrate
  */
 
-import "dotenv/config";
+import "@/lib/load-env";
 import path from "node:path";
 import { PGlite } from "@electric-sql/pglite";
 import postgres from "postgres";
