@@ -3,7 +3,7 @@
  * Run: npm run db:seed
  */
 
-import "dotenv/config";
+import "@/lib/load-env";
 import { sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {

@@ -1,4 +1,4 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
   players, articles, proEndorsements,
@@ -107,7 +107,10 @@ async function getRecent(): Promise<TopPageData["recentResults"]> {
     .innerJoin(players, eq(tournamentEntries.playerId, players.id))
     .innerJoin(tournaments, eq(tournamentEntries.tournamentId, tournaments.id))
     .where(
-      sql`${tournamentEntries.lastUpdatedAt} > ${dayAgo} AND ${tournamentEntries.status} IN ('won','lost')`,
+      and(
+        gte(tournamentEntries.lastUpdatedAt, dayAgo),
+        inArray(tournamentEntries.status, ["won", "lost"]),
+      ),
     )
     .orderBy(desc(tournamentEntries.lastUpdatedAt))
     .limit(6);

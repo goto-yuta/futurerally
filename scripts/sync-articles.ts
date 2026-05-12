@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "@/lib/load-env";
 import { syncArticles } from "@/lib/articles/sync-articles";
 
 async function main() {
