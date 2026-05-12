@@ -10,6 +10,20 @@ import {
   players, proEndorsements, tournaments, tournamentEntries,
   articles, articlePlayers, playerRankSnapshots, matchRecords,
 } from "@/lib/db/schema";
+import { resolvePlayerFromSackmann } from "@/lib/players/resolve";
+
+/**
+ * Demo players: fictional college/Futures profiles used only to showcase the
+ * Featured row and Sponsorship Scorecard UI. They have NO real ATP ID and we
+ * never guess kanji — these are flagged name_ja_verified=false so the
+ * editor knows to replace them with real players via `npm run player:add`.
+ */
+const REAL_PRO_ATP_IDS = [
+  106415, // Nishioka Yoshihito
+  106121, // Daniel Taro
+  105453, // Nishikori Kei
+  105216, // Sugita Yuichi
+] as const;
 
 function monthsAgo(n: number, day = 1): Date {
   const d = new Date();
@@ -28,11 +42,14 @@ async function main() {
     tournament_entries, tournaments, pro_endorsements, players
     RESTART IDENTITY CASCADE`);
 
-  const insertedPlayers = await db.insert(players).values([
+  // --- Demo college/Futures players (placeholder, name_ja unverified) -------
+  const demoPlayers = await db.insert(players).values([
     {
-      slug: "yamada-sho", nameJa: "山田 翔", nameEn: "Yamada Sho", birthYear: 2004,
-      hand: "右利き / 両手BH", heightCm: 178, category: "college", university: "慶應義塾大学",
-      currentJtaRank: 12, currentAtpRank: null, featured: true, displayOrder: 1,
+      slug: "yamada-sho", nameJa: "Yamada Sho", nameEn: "Yamada Sho",
+      nameJaVerified: false,
+      birthYear: 2004, hand: "右利き / 両手BH", heightCm: 178,
+      category: "college", university: "慶應義塾大学",
+      currentJtaRank: 12, featured: true, displayOrder: 1,
       sns: { ig: 4200, ig_er: 6.8, x: 1850, x_er: 3.2, tiktok: 980 },
       scorecard: {
         sns: { ig: 4200, ig_er: 6.8, x: 1850, x_er: 3.2, tiktok: 980 },
@@ -46,46 +63,55 @@ async function main() {
       },
     },
     {
-      slug: "sato-aoi", nameJa: "佐藤 葵", nameEn: "Sato Aoi", birthYear: 2003,
-      category: "futures", currentAtpRank: 812, featured: true, displayOrder: 2,
+      slug: "sato-aoi", nameJa: "Sato Aoi", nameEn: "Sato Aoi",
+      nameJaVerified: false,
+      birthYear: 2003, category: "futures", currentAtpRank: 812,
+      featured: true, displayOrder: 2,
       sns: { ig: 1800 },
       scorecard: { sns: { ig: 1800 }, personal: {}, currentSponsors: [], asks: ["ウェア提供"] },
     },
     {
-      slug: "nakamura-taku", nameJa: "中村 拓", nameEn: "Nakamura Taku", birthYear: 2002,
-      category: "college", university: "早稲田大学", currentJtaRank: 28,
-      featured: true, displayOrder: 3, sns: { ig: 2100 },
+      slug: "nakamura-taku", nameJa: "Nakamura Taku", nameEn: "Nakamura Taku",
+      nameJaVerified: false,
+      birthYear: 2002, category: "college", university: "早稲田大学",
+      currentJtaRank: 28, featured: true, displayOrder: 3,
+      sns: { ig: 2100 },
       scorecard: { sns: { ig: 2100 }, personal: {}, currentSponsors: [], asks: [] },
-    },
-    {
-      slug: "nishioka-yoshihito", nameJa: "西岡 良仁", nameEn: "Yoshihito Nishioka",
-      birthYear: 1995, hand: "左利き", heightCm: 170, category: "pro",
-      atpPlayerId: 106415, currentAtpRank: 175,
-    },
-    {
-      slug: "daniel-taro", nameJa: "ダニエル 太郎", nameEn: "Taro Daniel",
-      birthYear: 1993, hand: "右利き", heightCm: 191, category: "pro",
-      atpPlayerId: 106121, currentAtpRank: 335,
-    },
-    {
-      slug: "nishikori-kei", nameJa: "錦織 圭", nameEn: "Kei Nishikori",
-      birthYear: 1989, hand: "右利き", heightCm: 178, category: "pro",
-      atpPlayerId: 105453,
-    },
-    {
-      slug: "sugita-yuichi", nameJa: "杉田 祐一", nameEn: "Yuichi Sugita",
-      birthYear: 1988, hand: "右利き", heightCm: 173, category: "pro",
-      atpPlayerId: 105216,
     },
   ]).returning();
 
-  const [yamada, sato, nakamura, nishioka, daniel, nishikori, sugita] = insertedPlayers;
+  const [yamada, sato, nakamura] = demoPlayers;
+
+  // --- Real pros resolved from Sackmann + Wikidata (kanji authoritative) ---
+  const realPros: Array<typeof demoPlayers[number]> = [];
+  for (const atpId of REAL_PRO_ATP_IDS) {
+    const r = await resolvePlayerFromSackmann(atpId);
+    if (!r) {
+      console.warn(`Sackmann lookup failed for ATP ${atpId} — skipped`);
+      continue;
+    }
+    const [row] = await db.insert(players).values({
+      slug: r.slug,
+      nameJa: r.nameJa,
+      nameEn: r.nameEn,
+      nameJaVerified: r.nameJaVerified,
+      birthYear: r.birthYear,
+      hand: r.hand,
+      heightCm: r.heightCm,
+      category: "pro",
+      atpPlayerId: r.atpPlayerId,
+      wikidataId: r.wikidataId,
+    }).returning();
+    realPros.push(row);
+    console.log(`  + ${r.slug}: ${r.nameJa} ${r.nameJaVerified ? "(verified)" : "(romaji)"}`);
+  }
+  const [nishioka, daniel, nishikori, sugita] = realPros;
 
   await db.insert(proEndorsements).values([
-    { playerId: yamada.id, proName: "西岡 良仁", proStatus: "active", displayOrder: 1,
+    { playerId: yamada.id, proName: "西岡良仁", proStatus: "active", displayOrder: 1,
       quote: "フォアの威力は同世代でトップクラス。あとは経験。海外で戦えば化ける。" },
-    { playerId: sato.id, proName: "添田 豪", proStatus: "retired", displayOrder: 1 },
-    { playerId: nakamura.id, proName: "杉田 祐一", proStatus: "active", displayOrder: 1 },
+    { playerId: sato.id, proName: "添田豪", proStatus: "retired", displayOrder: 1 },
+    { playerId: nakamura.id, proName: "杉田祐一", proStatus: "active", displayOrder: 1 },
   ]);
 
   void nishikori; void sugita; // referenced below if needed
