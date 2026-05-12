@@ -19,7 +19,7 @@ def connect(database_url: str) -> Iterator[psycopg.Connection]:
 def fetch_tracked_players(conn: psycopg.Connection) -> list[dict]:
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT id, slug, name_ja, name_en, category, itf_id, itf_slug "
+            "SELECT id, slug, name_ja, name_en, category, itf_id, itf_slug, atp_player_id "
             "FROM players ORDER BY id"
         )
         return list(cur.fetchall())
