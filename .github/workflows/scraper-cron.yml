@@ -1,0 +1,39 @@
+name: Scraper Cron
+
+on:
+  schedule:
+    # 06:00 JST = 21:00 UTC previous day
+    - cron: "0 21 * * *"
+    # 21:00 JST = 12:00 UTC same day
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: scraper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        run: pip install uv
+      - name: Install deps
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install -e .
+      - name: Run pipeline
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: |
+          source .venv/bin/activate
+          python -m futurerally_scraper
