@@ -37,6 +37,7 @@ export const players = pgTable("players", {
   scorecard: jsonb("scorecard"),
   itfId: varchar("itf_id", { length: 32 }),
   itfSlug: varchar("itf_slug", { length: 96 }),
+  atpPlayerId: integer("atp_player_id"),
   lastScrapedAt: timestamp("last_scraped_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

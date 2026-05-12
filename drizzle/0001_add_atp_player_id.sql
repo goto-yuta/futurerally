@@ -1,0 +1,1 @@
+ALTER TABLE "players" ADD COLUMN "atp_player_id" integer;

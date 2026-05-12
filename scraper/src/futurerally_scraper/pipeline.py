@@ -17,18 +17,13 @@ from .db import (
 )
 from .models import PlayerStatus
 from .observability import init as init_observability
-from .scrapers.atp import ATPScraper
 from .scrapers.base import Scraper
-from .scrapers.itf import ITFScraper
+from .scrapers.sackmann import SackmannScraper
 
 
-def pick_scraper(player: dict, itf: Scraper, atp: Scraper) -> Scraper:
-    """Return which scraper to use for a given player row.
-
-    ATP is used only for the rank refresh pass — entries always come from ITF.
-    """
-    _ = atp
-    return itf
+def pick_scraper(player: dict, sackmann: Scraper) -> Scraper:
+    """Return which scraper to use for a given player row."""
+    return sackmann
 
 
 def process_player(
@@ -65,8 +60,7 @@ def run() -> None:
     log.info("pipeline_start")
 
     with httpx.Client(timeout=settings.request_timeout_seconds) as client:
-        itf = ITFScraper(client=client, settings=settings)
-        atp = ATPScraper(client=client, settings=settings)
+        sackmann = SackmannScraper(client=client, settings=settings)
 
         with connect(settings.database_url) as conn:
             players = fetch_tracked_players(conn)
@@ -74,7 +68,7 @@ def run() -> None:
 
             for player in players:
                 try:
-                    scraper = pick_scraper(player, itf=itf, atp=atp)
+                    scraper = pick_scraper(player, sackmann=sackmann)
                     process_player(player=player, scraper=scraper, conn=conn)
                     conn.commit()
                     log.info("player_done", slug=player["slug"])
@@ -82,15 +76,17 @@ def run() -> None:
                     conn.rollback()
                     sentry_sdk.capture_exception(exc)
                     log.warning("player_failed", slug=player["slug"], err=str(exc))
-                time.sleep(settings.request_delay_seconds)
+                # Sackmann is a single GitHub fetch per CSV — no per-player rate limit needed.
 
-            # ATP rank refresh — one fetch covers everyone
+            # ATP rank refresh — one cached fetch covers everyone
             try:
-                rankings = atp.fetch_rankings()
+                rankings = sackmann.fetch_rankings()
                 now = datetime.now(timezone.utc)
                 for player in players:
-                    name = player.get("name_en")
-                    rank = rankings.get(name) if name else None
+                    atp_id = player.get("atp_player_id")
+                    if atp_id is None:
+                        continue
+                    rank = rankings.get(int(atp_id))
                     if rank is None:
                         continue
                     update_player_current_rank(conn, player_id=player["id"], atp_rank=rank)

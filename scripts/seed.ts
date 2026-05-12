@@ -58,16 +58,28 @@ async function main() {
       scorecard: { sns: { ig: 2100 }, personal: {}, currentSponsors: [], asks: [] },
     },
     {
-      slug: "nishioka-yoshihito", nameJa: "西岡 良仁", nameEn: "Nishioka Yoshihito",
-      birthYear: 1995, category: "pro", currentAtpRank: 95,
+      slug: "nishioka-yoshihito", nameJa: "西岡 良仁", nameEn: "Yoshihito Nishioka",
+      birthYear: 1995, hand: "左利き", heightCm: 170, category: "pro",
+      atpPlayerId: 106415, currentAtpRank: 175,
     },
     {
-      slug: "daniel-taro", nameJa: "ダニエル 太郎", nameEn: "Daniel Taro",
-      birthYear: 1993, category: "pro", currentAtpRank: 124,
+      slug: "daniel-taro", nameJa: "ダニエル 太郎", nameEn: "Taro Daniel",
+      birthYear: 1993, hand: "右利き", heightCm: 191, category: "pro",
+      atpPlayerId: 106121, currentAtpRank: 335,
+    },
+    {
+      slug: "nishikori-kei", nameJa: "錦織 圭", nameEn: "Kei Nishikori",
+      birthYear: 1989, hand: "右利き", heightCm: 178, category: "pro",
+      atpPlayerId: 105453,
+    },
+    {
+      slug: "sugita-yuichi", nameJa: "杉田 祐一", nameEn: "Yuichi Sugita",
+      birthYear: 1988, hand: "右利き", heightCm: 173, category: "pro",
+      atpPlayerId: 105216,
     },
   ]).returning();
 
-  const [yamada, sato, nakamura, nishioka, daniel] = insertedPlayers;
+  const [yamada, sato, nakamura, nishioka, daniel, nishikori, sugita] = insertedPlayers;
 
   await db.insert(proEndorsements).values([
     { playerId: yamada.id, proName: "西岡 良仁", proStatus: "active", displayOrder: 1,
@@ -75,6 +87,8 @@ async function main() {
     { playerId: sato.id, proName: "添田 豪", proStatus: "retired", displayOrder: 1 },
     { playerId: nakamura.id, proName: "杉田 祐一", proStatus: "active", displayOrder: 1 },
   ]);
+
+  void nishikori; void sugita; // referenced below if needed
 
   const insertedTournaments = await db.insert(tournaments).values([
     {
