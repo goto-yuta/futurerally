@@ -38,6 +38,8 @@ export const players = pgTable("players", {
   itfId: varchar("itf_id", { length: 32 }),
   itfSlug: varchar("itf_slug", { length: 96 }),
   atpPlayerId: integer("atp_player_id"),
+  wikidataId: varchar("wikidata_id", { length: 16 }),
+  nameJaVerified: boolean("name_ja_verified").notNull().default(false),
   lastScrapedAt: timestamp("last_scraped_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
