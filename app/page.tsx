@@ -5,12 +5,17 @@ import { TodayStatusPanel } from "./_components/TodayStatusPanel";
 import { FeaturedPlayersRow } from "./_components/FeaturedPlayersRow";
 import { ArticleCard } from "./_components/ArticleCard";
 import { PlayerIndexTeaser } from "./_components/PlayerIndexTeaser";
+import { FuturesSection } from "./_components/FuturesSection";
 import { selectTopPageData } from "@/lib/queries/top-page";
+import { selectFuturesRecent } from "@/lib/queries/futures-recent";
 
 export const revalidate = 1800;
 
 export default async function Home() {
-  const data = await selectTopPageData();
+  const [data, futuresData] = await Promise.all([
+    selectTopPageData(),
+    selectFuturesRecent(3),
+  ]);
 
   return (
     <main className="min-h-screen bg-bg">
@@ -31,6 +36,8 @@ export default async function Home() {
       </section>
 
       <FeaturedPlayersRow players={data.featuredPlayers} />
+
+      <FuturesSection data={futuresData} />
 
       <section>
         <div className="flex justify-between items-center px-4 pt-4 pb-2">
