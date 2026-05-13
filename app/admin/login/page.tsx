@@ -1,5 +1,3 @@
-"use server";
-
 import { redirect } from "next/navigation";
 import { setAdminCookie } from "@/lib/admin/auth";
 
