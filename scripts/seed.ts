@@ -10,10 +10,10 @@
  */
 
 import "@/lib/load-env";
-import { sql, eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
-  players, articles, articlePlayers, playerRankSnapshots, matchRecords,
+  players, playerRankSnapshots,
 } from "@/lib/db/schema";
 import { resolvePlayerFromSackmann } from "@/lib/players/resolve";
 
@@ -87,25 +87,6 @@ async function main() {
       }),
     );
     console.log("  + rank snapshots for 島袋将");
-  }
-
-  // --- Sample article (body will be replaced by articles:sync from MDX) ---
-  const [article] = await db.insert(articles).values([
-    {
-      slug: "nishioka-yamada-talk",
-      title: "「俺もここで泣いた」西岡が、F級で戦う後輩へ。",
-      excerpt: "西岡良仁 × F級選手 / 6,200字 — F級時代に味わった挫折と、いま挑む後輩への言葉。",
-      body: "# placeholder\n本文はMDXファイルから同期されます。",
-      category: "interview",
-      authors: "編集部",
-      publishedAt: new Date("2026-05-12"),
-    },
-  ]).returning();
-
-  if (nishiokaRow) {
-    await db.insert(articlePlayers).values([
-      { articleId: article.id, playerId: nishiokaRow.id },
-    ]);
   }
 
   console.log("seed complete.");
