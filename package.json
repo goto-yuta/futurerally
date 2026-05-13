@@ -14,7 +14,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "articles:sync": "tsx scripts/sync-articles.ts",
     "player:add": "tsx scripts/add-player.ts",
-    "rankings:sync": "tsx scripts/sync-japanese-rankings.ts"
+    "rankings:sync": "tsx scripts/sync-japanese-rankings.ts",
+    "names:apply": "tsx scripts/apply-name-overrides.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.4.5",
