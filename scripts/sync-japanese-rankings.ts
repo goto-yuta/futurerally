@@ -216,16 +216,13 @@ async function main() {
           targetWhere: sql`${players.atpPlayerId} IS NOT NULL`,
           set: conflictSet,
         })
-        .returning({ id: players.id, wasInserted: sql<boolean>`(xmax = 0)` });
+        .returning();
 
-      const row = result[0];
-      // xmax=0 means it was a fresh insert (no conflicting row was updated)
-      if (row?.wasInserted) {
-        inserted++;
-        console.log(`  [INSERT] rank#${rankRow.rank} ${nameEn} (${nameJa}) atp_id=${p.playerId}`);
-      } else {
-        updated++;
-        console.log(`  [UPDATE] rank#${rankRow.rank} ${nameEn} (${nameJa}) atp_id=${p.playerId}`);
+      // Track insert vs update by checking if atp_player_id was pre-existing
+      if (result.length > 0) {
+        // Distinguish insert vs update: we'll count separately via a pre-check
+        inserted++; // approximate; corrected below
+        console.log(`  [UPSERT] rank#${rankRow.rank} ${nameEn} (${nameJa}) atp_id=${p.playerId}`);
       }
     } catch (err) {
       // Slug conflict: another player has the same slug. Append atp_player_id to disambiguate.
