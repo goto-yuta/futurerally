@@ -65,11 +65,12 @@ export default async function RankingsPage() {
             {rankings.map((p, i) => {
               const prevRank = i > 0 ? rankings[i - 1].atpRank : null;
               const showDivider =
-                prevRank !== null &&
-                (p.atpRank > 100 && prevRank <= 100) ||
-                (p.atpRank > 200 && prevRank <= 200) ||
-                (p.atpRank > 300 && prevRank <= 300) ||
-                (p.atpRank > 500 && prevRank <= 500);
+                prevRank !== null && (
+                  (p.atpRank > 100 && prevRank <= 100) ||
+                  (p.atpRank > 200 && prevRank <= 200) ||
+                  (p.atpRank > 300 && prevRank <= 300) ||
+                  (p.atpRank > 500 && prevRank <= 500)
+                );
 
               return (
                 <>
