@@ -37,3 +37,10 @@ jobs:
         run: |
           source .venv/bin/activate
           python -m futurerally_scraper
+      - name: Sync Japanese rankings
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          cd ..
+          npm ci
+          npm run rankings:sync
