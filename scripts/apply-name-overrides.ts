@@ -1,15 +1,17 @@
 /**
- * Apply jp-name-overrides.csv to the DB.
+ * Apply jp-name-overrides.csv (or jp-wta-name-overrides.csv) to the DB.
  * Matches by atp_player_id (primary) or name_en (fallback).
  * Sets name_ja + name_ja_verified=true.
  *
- * Run: npm run names:apply
+ * Run:
+ *   npm run names:apply           — ATP overrides (data/jp-name-overrides.csv)
+ *   npm run names:apply:wta       — WTA overrides (data/jp-wta-name-overrides.csv)
  */
 
 import "@/lib/load-env";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { players } from "@/lib/db/schema";
 
@@ -21,9 +23,12 @@ type Override = {
 };
 
 async function main() {
-  const csvPath = join(process.cwd(), "data", "jp-name-overrides.csv");
+  const isWta = process.argv.includes("--tour") &&
+    process.argv[process.argv.indexOf("--tour") + 1] === "wta";
+  const csvFile = isWta ? "jp-wta-name-overrides.csv" : "jp-name-overrides.csv";
+  const csvPath = join(process.cwd(), "data", csvFile);
+  console.log(`Reading ${csvFile}…`);
   const lines = readFileSync(csvPath, "utf-8").split("\n").filter(Boolean);
-  const header = lines[0].split(",");
   const rows: Override[] = lines.slice(1).map((l) => {
     const cols = l.split(",");
     return {

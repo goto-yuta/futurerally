@@ -10,16 +10,17 @@ const TABS = [
   { key: "pro", label: "プロ / Jr ATPランカー" },
   { key: "college", label: "大学生" },
   { key: "futures", label: "フューチャーズ" },
+  { key: "wta", label: "WTA女子" },
 ] as const;
 
-type Cat = "pro" | "college" | "futures";
+type Cat = "pro" | "college" | "futures" | "wta";
 
 export default async function PlayersIndexPage({
   searchParams,
 }: { searchParams: Promise<{ category?: string }> }) {
   const { category } = await searchParams;
   const filter: Cat | undefined =
-    category === "pro" || category === "college" || category === "futures"
+    category === "pro" || category === "college" || category === "futures" || category === "wta"
       ? (category as Cat)
       : undefined;
   const data = await selectPlayerIndex(filter);
@@ -31,7 +32,11 @@ export default async function PlayersIndexPage({
         <h1 className="text-fg font-extrabold text-lg mb-3">選手一覧</h1>
         <div className="flex gap-1.5 flex-wrap mb-4">
           {TABS.map((t) => {
-            const count = t.key ? data.counts[t.key] : data.counts.total;
+            const count = t.key === "wta"
+              ? data.counts.wta
+              : t.key
+                ? data.counts[t.key as keyof typeof data.counts]
+                : data.counts.total;
             return (
               <Link
                 key={t.key ?? "all"}

@@ -16,11 +16,22 @@ const CATEGORY_COLOR: Record<string, string> = {
   futures: "text-signal-green",
 };
 
-export default async function RankingsPage() {
+type Tour = "atp" | "wta";
+
+export default async function RankingsPage({
+  searchParams,
+}: { searchParams: Promise<{ tour?: string }> }) {
+  const { tour: tourParam } = await searchParams;
+  const tour: Tour = tourParam === "wta" ? "wta" : "atp";
+
   const [rankings, updatedAt] = await Promise.all([
-    selectJpRankings(),
-    selectRankingsUpdatedAt(),
+    selectJpRankings(tour),
+    selectRankingsUpdatedAt(tour),
   ]);
+
+  const tourLabel = tour === "wta" ? "WTA" : "ATP";
+  const sourceRepo = tour === "wta" ? "tennis_wta" : "tennis_atp";
+  const sourceUrl = `https://github.com/JeffSackmann/${sourceRepo}`;
 
   return (
     <main className="min-h-screen bg-bg">
@@ -30,10 +41,10 @@ export default async function RankingsPage() {
       <div className="bg-bg-panel border-b border-line px-4 py-5">
         <div className="max-w-4xl mx-auto">
           <div className="text-[9px] tracking-widest text-fg-muted font-extrabold mb-1">
-            ATP RANKINGS · JAPANESE PLAYERS
+            {tourLabel} RANKINGS · JAPANESE PLAYERS
           </div>
           <h1 className="text-2xl font-black text-fg tracking-tighter">
-            日本人選手 ATPランキング
+            日本人選手 {tourLabel}ランキング
           </h1>
           <div className="flex items-center gap-4 mt-2 text-[10px] text-fg-muted">
             <span>{rankings.length}名</span>
@@ -45,8 +56,34 @@ export default async function RankingsPage() {
               </span>
             </span>
             <span>·</span>
-            <span>Source: Jeff Sackmann tennis_atp</span>
+            <span>Source: Jeff Sackmann {sourceRepo}</span>
           </div>
+        </div>
+      </div>
+
+      {/* ATP / WTA tabs */}
+      <div className="bg-bg-panel border-b border-line px-4">
+        <div className="max-w-4xl mx-auto flex gap-0">
+          <Link
+            href="/rankings?tour=atp"
+            className={`px-4 py-2.5 text-[11px] font-extrabold tracking-widest border-b-2 transition-colors ${
+              tour === "atp"
+                ? "border-signal-yellow text-signal-yellow"
+                : "border-transparent text-fg-muted hover:text-fg"
+            }`}
+          >
+            ATP 男子
+          </Link>
+          <Link
+            href="/rankings?tour=wta"
+            className={`px-4 py-2.5 text-[11px] font-extrabold tracking-widest border-b-2 transition-colors ${
+              tour === "wta"
+                ? "border-signal-yellow text-signal-yellow"
+                : "border-transparent text-fg-muted hover:text-fg"
+            }`}
+          >
+            WTA 女子
+          </Link>
         </div>
       </div>
 
@@ -133,12 +170,12 @@ export default async function RankingsPage() {
         <div className="mt-8 text-[10px] text-fg-quiet text-center">
           Match data &amp; rankings via{" "}
           <a
-            href="https://github.com/JeffSackmann/tennis_atp"
+            href={sourceUrl}
             target="_blank"
             rel="noopener"
             className="underline hover:text-signal-yellow"
           >
-            tennis_atp by Jeff Sackmann
+            {sourceRepo} by Jeff Sackmann
           </a>{" "}
           (CC BY-NC-SA 4.0) · 毎週月曜自動更新
         </div>
