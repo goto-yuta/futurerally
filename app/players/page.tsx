@@ -30,7 +30,8 @@ export default async function PlayersIndexPage({
       <SiteHeader active="/players" />
       <div className="px-4 py-4">
         <h1 className="text-fg font-extrabold text-lg mb-3">選手一覧</h1>
-        <div className="flex gap-1.5 flex-wrap mb-4">
+        {/* Tab bar — horizontal scroll on mobile */}
+        <div className="flex gap-1 overflow-x-auto pb-1 mb-4 -mx-4 px-4 scrollbar-none">
           {TABS.map((t) => {
             const count = t.key === "wta"
               ? data.counts.wta
@@ -41,11 +42,11 @@ export default async function PlayersIndexPage({
               <Link
                 key={t.key ?? "all"}
                 href={t.key ? `/players?category=${t.key}` : "/players"}
-                className={`px-2.5 py-1 text-[10px] tracking-wide font-bold bg-bg-card ${
+                className={`shrink-0 px-3 py-2 text-[10px] tracking-wide font-bold bg-bg-card min-h-[44px] flex items-center ${
                   filter === t.key ? "text-signal-yellow" : "text-fg-muted"
                 }`}
               >
-                {t.label} · {count}人
+                {t.label}&nbsp;·&nbsp;{count}
               </Link>
             );
           })}
