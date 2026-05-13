@@ -1,0 +1,1 @@
+ALTER TABLE "players" ADD COLUMN "tour" varchar(4) DEFAULT 'atp';

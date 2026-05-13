@@ -37,9 +37,13 @@ export const players = pgTable("players", {
   scorecard: jsonb("scorecard"),
   itfId: varchar("itf_id", { length: 32 }),
   itfSlug: varchar("itf_slug", { length: 96 }),
+  // NOTE: atpPlayerId is reused for WTA player IDs too (column rename deferred).
+  // WTA IDs are in the 200000+ range and do not overlap with ATP IDs in practice.
   atpPlayerId: integer("atp_player_id"),
   wikidataId: varchar("wikidata_id", { length: 16 }),
   nameJaVerified: boolean("name_ja_verified").notNull().default(false),
+  // 'atp' | 'wta' — all pre-existing rows default to 'atp'
+  tour: varchar("tour", { length: 4 }).default("atp"),
   lastScrapedAt: timestamp("last_scraped_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

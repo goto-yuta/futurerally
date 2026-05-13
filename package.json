@@ -15,7 +15,9 @@
     "articles:sync": "tsx scripts/sync-articles.ts",
     "player:add": "tsx scripts/add-player.ts",
     "rankings:sync": "tsx scripts/sync-japanese-rankings.ts",
-    "names:apply": "tsx scripts/apply-name-overrides.ts"
+    "rankings:sync:wta": "tsx scripts/sync-wta-rankings.ts",
+    "names:apply": "tsx scripts/apply-name-overrides.ts",
+    "names:apply:wta": "tsx scripts/apply-name-overrides.ts --tour wta"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.4.5",
