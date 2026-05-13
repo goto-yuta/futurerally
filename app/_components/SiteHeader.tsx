@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const NAV = [
   { href: "/", label: "HOME" },
+  { href: "/rankings", label: "ランキング" },
   { href: "/players", label: "選手" },
   { href: "/tournaments", label: "大会" },
   { href: "/articles", label: "記事" },
