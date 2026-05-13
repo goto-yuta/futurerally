@@ -8,13 +8,15 @@ export function PlayerListCard({ player }: { player: PlayerListItem }) {
   return (
     <Link
       href={`/players/${player.slug}`}
-      className={`bg-bg-card p-2.5 block border-l-2 ${player.featured ? "border-signal-orange" : "border-line"} hover:border-fg-muted`}
+      className={`bg-bg-card px-3 py-3.5 block border-l-2 min-h-[64px] flex flex-col justify-center ${
+        player.featured ? "border-signal-orange" : "border-line"
+      } hover:border-fg-muted active:bg-bg`}
     >
-      <div className="text-[12px] font-extrabold text-fg">{player.nameJa}</div>
-      <div className="text-[9px] text-fg-muted mt-0.5">
+      <div className="text-[13px] font-extrabold text-fg leading-tight">{player.nameJa}</div>
+      <div className="text-[10px] text-fg-muted mt-1">
         {player.university ?? (player.category === "pro" ? "プロ" : "フューチャーズ")}
+        <span className="ml-2 tabular">{rankLabel}</span>
       </div>
-      <div className="text-[9px] tabular text-fg-muted mt-1">{rankLabel}</div>
     </Link>
   );
 }

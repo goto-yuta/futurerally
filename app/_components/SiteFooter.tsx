@@ -1,9 +1,9 @@
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-bg-panel mt-16 px-4 py-6 text-[10px] text-fg-quiet">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-3 justify-between">
+    <footer className="border-t border-line bg-bg-panel mt-12 px-4 py-5 text-[10px] text-fg-quiet">
+      <div className="max-w-5xl mx-auto flex flex-col gap-2">
         <div className="font-bold tracking-widest text-fg-muted">FUTURERALLY · 2026</div>
-        <div className="flex flex-col md:items-end gap-1">
+        <div className="flex flex-col gap-1">
           <div>
             Match data &amp; rankings via{" "}
             <a
@@ -12,7 +12,7 @@ export function SiteFooter() {
               rel="noopener"
               className="underline hover:text-signal-yellow"
             >
-              tennis_atp by Jeff Sackmann
+              tennis_atp / tennis_wta by Jeff Sackmann
             </a>
             {" "}(
             <a

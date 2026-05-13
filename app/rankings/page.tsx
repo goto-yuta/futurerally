@@ -120,18 +120,18 @@ export default async function RankingsPage({
                     key={p.slug}
                     className="border-b border-line hover:bg-bg-panel transition-colors"
                   >
-                    <td className="py-2.5 pr-4">
-                      <span className="tabular text-[16px] font-black text-fg">
+                    <td className="py-3 pr-3 w-12">
+                      <span className="tabular text-[15px] font-black text-fg">
                         {p.atpRank}
                       </span>
                     </td>
-                    <td className="py-2.5 pr-4">
+                    <td className="py-3 pr-2">
                       <Link
                         href={`/players/${p.slug}`}
-                        className="group flex items-center gap-2"
+                        className="group block min-h-[44px] flex flex-col justify-center"
                       >
                         <span
-                          className={`text-[11px] font-bold ${
+                          className={`text-[13px] font-bold leading-tight ${
                             p.nameJaVerified
                               ? "text-fg group-hover:text-signal-yellow"
                               : "text-fg-muted group-hover:text-fg"
@@ -139,14 +139,14 @@ export default async function RankingsPage({
                         >
                           {p.nameJa}
                         </span>
-                        {!p.nameJaVerified && (
-                          <span className="text-[8px] text-fg-quiet tracking-wide">
-                            {p.nameEn}
-                          </span>
-                        )}
+                        {/* On mobile: show category inline under name */}
+                        <span className="md:hidden text-[9px] text-fg-quiet mt-0.5">
+                          {p.nameJaVerified ? "" : `${p.nameEn} · `}
+                          {CATEGORY_BADGE[p.category] ?? p.category}
+                        </span>
                       </Link>
                     </td>
-                    <td className="py-2.5 pr-4 text-right hidden md:table-cell">
+                    <td className="py-3 pr-4 text-right hidden md:table-cell">
                       <span
                         className={`text-[9px] font-extrabold tracking-widest ${
                           CATEGORY_COLOR[p.category] ?? "text-fg-muted"
@@ -155,7 +155,7 @@ export default async function RankingsPage({
                         {CATEGORY_BADGE[p.category] ?? p.category.toUpperCase()}
                       </span>
                     </td>
-                    <td className="py-2.5 text-right hidden md:table-cell">
+                    <td className="py-3 text-right hidden md:table-cell">
                       <span className="text-[10px] text-fg-muted">
                         {p.university ?? "—"}
                       </span>

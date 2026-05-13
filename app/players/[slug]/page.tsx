@@ -46,8 +46,9 @@ export default async function PlayerProfilePage({
         />
       )}
 
+      {/* Mobile: Scorecard first (order-1), desktop: right column (order-2) */}
       <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-px bg-line">
-        <div className="bg-bg p-3.5 flex flex-col gap-2.5">
+        <div className="bg-bg p-3.5 flex flex-col gap-2.5 order-2 md:order-1">
           <RankingBlock
             jtaRank={data.player.currentJtaRank}
             atpRank={data.player.currentAtpRank}
@@ -57,7 +58,7 @@ export default async function PlayerProfilePage({
           <SchedulePanel entries={data.schedule} />
           <RelatedArticles articles={data.relatedArticles} />
         </div>
-        <div className="bg-bg p-3.5 flex flex-col gap-2.5">
+        <div className="bg-bg p-3.5 flex flex-col gap-2.5 order-1 md:order-2">
           <ProfileClientShell
             playerSlug={data.player.slug}
             playerName={data.player.nameJa}
