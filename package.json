@@ -23,6 +23,7 @@
   "dependencies": {
     "@electric-sql/pglite": "^0.4.5",
     "@marsidev/react-turnstile": "^1.5.2",
+    "@vercel/blob": "^2.3.3",
     "drizzle-orm": "^0.45.2",
     "gray-matter": "^4.0.3",
     "next": "16.2.6",
