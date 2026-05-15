@@ -12,6 +12,7 @@ const NAV = [
   { href: "/admin", label: "ダッシュボード" },
   { href: "/admin/players", label: "選手" },
   { href: "/admin/articles", label: "記事" },
+  { href: "/admin/upload", label: "画像" },
   { href: "/admin/inquiries", label: "問い合わせ" },
 ];
 

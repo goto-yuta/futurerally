@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import type { ComponentPropsWithoutRef } from "react";
+import Image from "next/image";
 
 export const mdxComponents: MDXComponents = {
   h1: (props: ComponentPropsWithoutRef<"h1">) => (
@@ -36,4 +37,18 @@ export const mdxComponents: MDXComponents = {
   pre: (props: ComponentPropsWithoutRef<"pre">) => (
     <pre className="bg-bg-card border border-line p-3 my-4 text-[13px] text-fg overflow-x-auto" {...props} />
   ),
+  img: ({ src, alt }: ComponentPropsWithoutRef<"img">) =>
+    typeof src === "string" && src ? (
+      <span className="block my-6">
+        <Image
+          src={src}
+          alt={alt ?? ""}
+          width={1200}
+          height={675}
+          className="w-full rounded-sm"
+          style={{ height: "auto" }}
+        />
+        {alt && <span className="block text-center text-fg-quiet text-[11px] mt-2">{alt}</span>}
+      </span>
+    ) : null,
 };
