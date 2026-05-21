@@ -17,6 +17,7 @@ export type TopPageData = {
     playerName: string;
     tournamentSlug: string;
     tournamentName: string;
+    tournamentLevel: string;
     currentRound: string;
     note?: string;
   }>;
@@ -74,6 +75,7 @@ async function getAlive(): Promise<TopPageData["aliveEntries"]> {
       playerName: players.nameJa,
       tournamentSlug: tournaments.slug,
       tournamentName: tournaments.nameJa,
+      tournamentLevel: tournaments.level,
       currentRound: tournamentEntries.currentRound,
       nextMatchAt: tournamentEntries.nextMatchAt,
     })
@@ -87,6 +89,7 @@ async function getAlive(): Promise<TopPageData["aliveEntries"]> {
     playerName: r.playerName,
     tournamentSlug: r.tournamentSlug,
     tournamentName: r.tournamentName,
+    tournamentLevel: r.tournamentLevel,
     currentRound: r.currentRound ?? "",
     note: r.nextMatchAt ? `${r.nextMatchAt.toISOString().slice(11, 16)} プレー予定` : undefined,
   }));
