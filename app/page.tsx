@@ -6,6 +6,7 @@ import { FeaturedPlayersRow } from "./_components/FeaturedPlayersRow";
 import { ArticleCard } from "./_components/ArticleCard";
 import { PlayerIndexTeaser } from "./_components/PlayerIndexTeaser";
 import { FuturesSection } from "./_components/FuturesSection";
+import { LiveBar } from "./_components/LiveBar";
 import { selectTopPageData } from "@/lib/queries/top-page";
 import { selectFuturesRecent } from "@/lib/queries/futures-recent";
 
@@ -34,6 +35,8 @@ export default async function Home() {
         )}
         <TodayStatusPanel alive={data.aliveEntries} recent={data.recentResults} />
       </section>
+
+      <LiveBar entries={data.aliveEntries} />
 
       <FeaturedPlayersRow players={data.featuredPlayers} />
 

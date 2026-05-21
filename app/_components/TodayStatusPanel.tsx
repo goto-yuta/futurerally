@@ -20,33 +20,12 @@ export type RecentResultEntry = {
 };
 
 export function TodayStatusPanel({
-  alive, recent,
+  alive: _alive, recent,
 }: { alive: AliveEntry[]; recent: RecentResultEntry[] }) {
   return (
     <aside className="bg-bg p-3">
-      <div className="text-[9px] tracking-widest text-signal-red font-extrabold mb-2">
-        ● TODAY · 大会出場中
-      </div>
-      <ul className="flex flex-col gap-1 mb-3">
-        {alive.map((e, i) => (
-          <li key={i} className="bg-bg border-l-2 border-signal-yellow px-2.5 py-2 text-[10px]">
-            <div className="text-fg font-bold">
-              <Link href={`/players/${e.playerSlug}`} className="hover:text-signal-yellow">
-                {e.playerName}
-              </Link>
-            </div>
-            <div className="text-fg-muted text-[9px] mt-0.5">
-              <Link href={`/tournaments/${e.tournamentSlug}`} className="hover:text-signal-yellow">
-                {e.tournamentName}
-              </Link>
-              {" "}· 残{e.currentRound}
-              {e.note ? ` · ${e.note}` : ""}
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div className="text-[8px] tracking-widest text-fg-muted font-bold pt-2 mb-1.5 border-t border-line">
-        昨日の結果
+      <div className="text-[8px] tracking-widest text-fg-muted font-bold mb-1.5">
+        最近の結果
       </div>
       <ul className="flex flex-col gap-1">
         {recent.map((e, i) => (
@@ -72,6 +51,9 @@ export function TodayStatusPanel({
             </div>
           </li>
         ))}
+        {recent.length === 0 && (
+          <li className="text-fg-quiet text-[10px] py-1">最近の試合なし</li>
+        )}
       </ul>
     </aside>
   );
