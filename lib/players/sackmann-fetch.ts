@@ -29,7 +29,7 @@ export async function fetchSackmannPlayer(atpId: number): Promise<SackmannPlayer
 
 async function loadAllPlayers(): Promise<Map<number, SackmannPlayer>> {
   const res = await fetch(SACKMANN_PLAYERS_URL, {
-    headers: { "User-Agent": "FutureRally/1.0" },
+    headers: { "User-Agent": "UltimateForehand/1.0" },
   });
   if (!res.ok) throw new Error(`failed to fetch Sackmann players: HTTP ${res.status}`);
   const text = await res.text();

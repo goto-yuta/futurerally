@@ -13,7 +13,7 @@ export function SiteHeader({ active }: { active: string }) {
   return (
     <header className="flex items-center justify-between px-4 py-3 border-b border-line bg-bg sticky top-0 z-40">
       <Link href="/" className="text-fg font-extrabold text-xs tracking-widest">
-        FUTURERALLY
+        ULTIMATE FOREHAND
       </Link>
 
       {/* Desktop nav — hidden on mobile */}

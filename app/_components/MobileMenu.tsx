@@ -63,7 +63,7 @@ export function MobileMenuButton({ active }: { active: string }) {
           <nav className="absolute right-0 top-0 bottom-0 w-64 bg-bg-panel border-l border-line flex flex-col">
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-line">
-              <span className="text-fg font-extrabold text-xs tracking-widest">FUTURERALLY</span>
+              <span className="text-fg font-extrabold text-xs tracking-widest">ULTIMATE FOREHAND</span>
               <button
                 aria-label="閉じる"
                 onClick={() => setOpen(false)}

@@ -6,8 +6,8 @@ import { SiteFooter } from "./_components/SiteFooter";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "FutureRally",
-  description: "日本のフューチャーズ・大学テニス選手のためのメディア",
+  title: "Ultimate Forehand",
+  description: "日本テニス選手のためのメディア — Ultimate Forehand",
 };
 
 export default function RootLayout({

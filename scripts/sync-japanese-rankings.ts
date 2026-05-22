@@ -23,7 +23,7 @@ const SACKMANN_RANKINGS_URL =
 const SACKMANN_PLAYERS_URL =
   "https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_players.csv";
 
-const USER_AGENT = "FutureRally/1.0 (https://futurerally.vercel.app)";
+const USER_AGENT = "UltimateForehand/1.0 (https://ultimateforehand.vercel.app)";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Types

@@ -15,7 +15,7 @@ export async function generateMetadata({
   const a = await selectArticleDetail(slug);
   if (!a) return {};
   return {
-    title: `${a.title} | FutureRally`,
+    title: `${a.title} | Ultimate Forehand`,
     description: a.excerpt,
     openGraph: {
       title: a.title,
