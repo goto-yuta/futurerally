@@ -17,7 +17,7 @@ export default function AdminLoginPage({
     <div className="min-h-screen flex items-center justify-center bg-bg">
       <div className="w-full max-w-sm bg-bg-panel border border-line rounded-sm p-8">
         <div className="font-bold tracking-widest text-fg-muted text-[11px] mb-6">
-          FUTURERALLY · ADMIN
+          ULTIMATE FOREHAND · ADMIN
         </div>
         <form action={loginAction} className="flex flex-col gap-4">
           <input

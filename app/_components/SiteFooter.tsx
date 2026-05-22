@@ -2,7 +2,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-bg-panel mt-12 px-4 py-5 text-[10px] text-fg-quiet">
       <div className="max-w-5xl mx-auto flex flex-col gap-2">
-        <div className="font-bold tracking-widest text-fg-muted">FUTURERALLY · 2026</div>
+        <div className="font-bold tracking-widest text-fg-muted">ULTIMATE FOREHAND · 2026</div>
         <div className="flex flex-col gap-1">
           <div>
             Match data &amp; rankings via{" "}

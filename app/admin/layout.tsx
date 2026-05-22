@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-bg flex flex-col">
       <header className="bg-bg-panel border-b border-line px-4 py-3 flex items-center gap-6">
         <span className="font-bold tracking-widest text-fg-muted text-[11px] shrink-0">
-          FUTURERALLY · ADMIN
+          ULTIMATE FOREHAND · ADMIN
         </span>
         <nav className="flex gap-1 flex-1">
           {NAV.map((n) => (

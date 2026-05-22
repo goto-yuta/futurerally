@@ -10,7 +10,7 @@ export type WikidataLabels = {
 };
 
 const WIKIDATA_API = "https://www.wikidata.org/w/api.php";
-const USER_AGENT = "FutureRally/1.0 (https://futurerally.vercel.app)";
+const USER_AGENT = "UltimateForehand/1.0 (https://ultimateforehand.vercel.app)";
 
 export async function fetchWikidataLabels(
   wikidataId: string,

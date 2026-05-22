@@ -17,7 +17,7 @@ export async function sendInquiryEmail(args: Args): Promise<void> {
   const resend = new Resend(apiKey);
 
   await resend.emails.send({
-    from: "FutureRally <inquiry@futurerally.example>",
+    from: "Ultimate Forehand <inquiry@ultimateforehand.example>",
     to,
     replyTo: args.contactEmail,
     subject: `[Inquiry] ${args.companyName} → ${args.playerName}`,
